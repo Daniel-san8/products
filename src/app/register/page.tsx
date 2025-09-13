@@ -59,6 +59,7 @@ export default function Register() {
       };
 
       const result = await registerUser(payload);
+      console.log(result);
       alert(`✅ ${result.message} - Token: ${result.token}`);
       reset();
     } catch (error: any) {
