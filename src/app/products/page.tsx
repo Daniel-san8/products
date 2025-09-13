@@ -63,6 +63,9 @@ export default function ProductsPage() {
   }, [token]);
 
   const onCreate = async (data: ProductForm) => {
+    console.log(data);
+    console.log(token);
+
     if (!token) return;
     setLoading(true);
     try {
