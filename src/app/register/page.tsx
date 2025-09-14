@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { IMaskInput } from 'react-imask';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { registerUser } from '@/services/registerUser';
 
 const registerSchema = z
@@ -27,6 +28,8 @@ const registerSchema = z
 type RegisterData = z.infer<typeof registerSchema>;
 
 export default function Register() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -62,6 +65,8 @@ export default function Register() {
       console.log(result);
       alert(`✅ ${result.message} - Token: ${result.token}`);
       reset();
+
+      router.push('/login');
     } catch (error: any) {
       if (error.message.includes('email')) {
         setError('email', { type: 'manual', message: error.message });
@@ -149,6 +154,16 @@ export default function Register() {
             >
               {loading ? 'Registrando...' : 'Registrar'}
             </Button>
+
+            <p className="text-sm text-center text-gray-500 dark:text-gray-400 mt-2">
+              Já tem conta?{' '}
+              <span
+                onClick={() => router.push('login')}
+                className="text-indigo-500 hover:underline cursor-pointer"
+              >
+                Login
+              </span>
+            </p>
           </form>
         </CardBody>
       </Card>

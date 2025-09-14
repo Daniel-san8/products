@@ -22,9 +22,11 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { useRouter } from 'next/navigation';
 
 export default function ProductsPage() {
   const token = useSelector((state: RootState) => state.auth.token);
+  const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -158,13 +160,16 @@ export default function ProductsPage() {
     if (page < totalPages) loadProducts(page + 1);
   };
 
+  if (!token) {
+    router.push('/login');
+  }
+
   return (
     <div className="p-4 md:p-6">
       <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">
         Produtos
       </h1>
 
-      {/* Formulário */}
       <Card className="mb-6 w-full max-w-lg mx-auto md:mx-0">
         <CardHeader>Adicionar Produto</CardHeader>
         <CardBody>
@@ -201,7 +206,6 @@ export default function ProductsPage() {
         </CardBody>
       </Card>
 
-      {/* Lista de produtos */}
       <h2 className="text-xl md:text-2xl font-bold mb-3">Lista de Produtos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((p) => (
@@ -247,7 +251,6 @@ export default function ProductsPage() {
         ))}
       </div>
 
-      {/* Paginação */}
       <div className="flex justify-center gap-2 mt-4">
         <Button disabled={page === 1} onClick={handlePrevPage}>
           Anterior
@@ -260,7 +263,6 @@ export default function ProductsPage() {
         </Button>
       </div>
 
-      {/* Modal de edição */}
       <Dialog
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
