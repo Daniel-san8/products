@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input, Button, Card, CardBody, CardHeader } from '@heroui/react';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/slices/authSlice';
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { useRouter } from 'next/navigation';
 
 const loginSchema = z.object({
@@ -53,8 +52,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
-      <ThemeSwitcher />
-
       <Card className="w-full max-w-md shadow-xl rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 overflow-hidden">
         <CardHeader className="text-center text-3xl font-extrabold py-6 bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
           <span className="ml-8">Login</span>

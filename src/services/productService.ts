@@ -50,12 +50,13 @@ export const createProduct = async (token: string, data: ProductPayload) => {
 export const updateProduct = async (
   token: string,
   id: string,
-  data: ProductPayload
+  data: Partial<ProductPayload>
 ) => {
   const formData = new FormData();
-  formData.append('title', data.title);
-  formData.append('description', data.description);
-  formData.append('thumbnail', data.thumbnail);
+
+  if (data.title) formData.append('title', data.title);
+  if (data.description) formData.append('description', data.description);
+  if (data.thumbnail) formData.append('thumbnail', data.thumbnail);
 
   const res = await fetch(`${API_URL}/products/${id}`, {
     method: 'PUT',
@@ -67,6 +68,7 @@ export const updateProduct = async (
     const err = await res.json();
     throw new Error(err.message || 'Erro desconhecido, contate o suporte');
   }
+
   return res.json();
 };
 

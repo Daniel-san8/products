@@ -165,12 +165,12 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="p-4 md:p-6">
-      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">
+    <div className="p-4 md:p-6 bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left text-gray-900 dark:text-gray-100">
         Produtos
       </h1>
 
-      <Card className="mb-6 w-full max-w-lg mx-auto md:mx-0">
+      <Card className="mb-6 w-full max-w-lg mx-auto md:mx-0 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors p-4">
         <CardHeader>Adicionar Produto</CardHeader>
         <CardBody>
           <div className="flex flex-col gap-3">
@@ -186,7 +186,12 @@ export default function ProductsPage() {
               onChange={(e) => setDescription(e.target.value)}
               fullWidth
             />
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="dark:bg-gray-700 dark:text-gray-100 p-3 rounded-2xl"
+            />
             {preview && (
               <img
                 src={preview}
@@ -206,10 +211,15 @@ export default function ProductsPage() {
         </CardBody>
       </Card>
 
-      <h2 className="text-xl md:text-2xl font-bold mb-3">Lista de Produtos</h2>
+      <h2 className="text-xl md:text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+        Lista de Produtos
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((p) => (
-          <Card key={p.id} className="flex flex-col justify-between">
+          <Card
+            key={p.id}
+            className="flex flex-col justify-between bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors p-4"
+          >
             <CardBody className="flex flex-col justify-between h-full">
               <div>
                 <strong className="text-lg block truncate" title={p.title}>
@@ -251,7 +261,7 @@ export default function ProductsPage() {
         ))}
       </div>
 
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center gap-2 mt-4 text-gray-900 dark:text-gray-100">
         <Button disabled={page === 1} onClick={handlePrevPage}>
           Anterior
         </Button>
@@ -269,7 +279,7 @@ export default function ProductsPage() {
         className="fixed z-10 inset-0 overflow-y-auto"
       >
         <div className="flex items-center justify-center min-h-screen p-4">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-full max-w-md">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-full max-w-md text-gray-900 dark:text-gray-100 transition-colors">
             <h3 className="text-lg font-bold mb-4">Editar Produto</h3>
             <div className="flex flex-col gap-3">
               <Input
@@ -284,7 +294,12 @@ export default function ProductsPage() {
                 onChange={(e) => setDescription(e.target.value)}
                 fullWidth
               />
-              <input type="file" accept="image/*" onChange={handleFileChange} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="dark:bg-gray-700 dark:text-gray-100"
+              />
               {preview && (
                 <img
                   src={preview}
@@ -315,15 +330,21 @@ export default function ProductsPage() {
         </div>
       </Dialog>
 
-      <h2 className="text-xl md:text-2xl font-bold mt-6 mb-3">
+      <h2 className="text-xl md:text-2xl font-bold mt-6 mb-3 text-gray-900 dark:text-gray-100">
         Gráfico de Métricas
       </h2>
       <div className="w-full h-64 md:h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
+            <XAxis dataKey="name" stroke="#374151" />
+            <YAxis stroke="#374151" />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#f9fafb',
+                border: '1px solid #d1d5db',
+                color: '#111827',
+              }}
+            />
             <Legend />
             <Bar dataKey="vendas" fill="#8884d8" />
           </BarChart>

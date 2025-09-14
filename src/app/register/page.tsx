@@ -4,7 +4,6 @@ import { Input, Button, Card, CardBody, CardHeader } from '@heroui/react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { IMaskInput } from 'react-imask';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -82,8 +81,6 @@ export default function Register() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
-      <ThemeSwitcher />
-
       <Card className="w-full max-w-md p-6 shadow-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors">
         <CardHeader className="flex flex-col items-center">
           <h1 className="text-2xl font-bold">Criar Conta</h1>
