@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 Products App
 
-## Getting Started
+Aplicação web para gerenciamento de produtos, incluindo criação, edição, exclusão, paginação e visualização de métricas em gráfico.
 
-First, run the development server:
+---
+
+## 🚀 Tecnologias Utilizadas
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-FC6C1D?style=for-the-badge&logoColor=white)
+![Heroui](https://img.shields.io/badge/Heroui-4F46E5?style=for-the-badge&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-000000?style=for-the-badge&logoColor=white)
+
+---
+
+## ⚙️ Funcionalidades
+
+- Cadastro de produtos com título, descrição e imagem (thumbnail)
+- Edição de produtos (título, descrição e thumbnail separados)
+- Exclusão de produtos
+- Paginação de produtos (10 por página)
+- Dashboard com gráfico de métricas (exemplo de vendas)
+- Dark Mode com alternância pelo botão flutuante
+- Redirecionamento automático para login se usuário não autenticado
+- Validação de formulários com Zod e React Hook Form
+- Pré-visualização de imagens antes do upload
+
+---
+
+## 📝 Pré-requisitos
+
+- Node.js >= 18
+- npm ou yarn
+- API de produtos disponível e configurada
+
+---
+
+## 💻 Instalação
+
+1. Clone o repositório:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Daniel-san8/products.git
+cd products
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# ou
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+yarn
 
-## Learn More
+NEXT_PUBLIC_API=example
 
-To learn more about Next.js, take a look at the following resources:
+npm run dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# ou
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+yarn dev
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+/app
+/components
+/services
+/store
+/public
