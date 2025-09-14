@@ -8,6 +8,7 @@ import { Input, Button, Card, CardBody, CardHeader } from '@heroui/react';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/store/slices/authSlice';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import { useRouter } from 'next/navigation';
 
 const loginSchema = z.object({
   email: z.string().email('Digite um e-mail válido'),
@@ -22,6 +23,7 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onSubmit = async (data: LoginForm) => {
     setLoading(true);
@@ -41,7 +43,7 @@ export default function LoginPage() {
       dispatch(setToken(result.token));
 
       alert(`✅ Bem-vindo ${result.user.name}`);
-      window.location.href = '/products';
+      router.push('/products');
     } catch (error: any) {
       alert(`❌ ${error.message}`);
     } finally {

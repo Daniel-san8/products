@@ -1,69 +1,84 @@
+import { Product } from './types';
+
+const API_URL = process.env.NEXT_PUBLIC_API;
+
 export type ProductPayload = {
   title: string;
   description: string;
-  thumbnail: string;
+  thumbnail: File;
 };
 
-export type Product = {
-  id: string;
-  title: string;
-  description: string;
-  status: boolean;
-  updatedAt: string;
-  thumbnail?: string;
-};
-
-export async function fetchProducts(
+export const fetchProducts = async (
   token: string,
-  page = 1,
-  pageSize = 10,
-  filter = ''
-) {
+  page: number = 1,
+  pageSize: number = 10
+) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API}/products?page=${page}&pageSize=${pageSize}&filter=${filter}`,
+    `${API_URL}/products?page=${page}&pageSize=${pageSize}`,
     {
       headers: { Authorization: `Bearer ${token}` },
     }
   );
+
   if (!res.ok) throw new Error('Erro ao buscar produtos');
-  return res.json();
-}
 
-export async function createProduct(token: string, data: ProductPayload) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/products`, {
+  return res.json() as Promise<{
+    data: Product[];
+    meta: { page: number; pageSize: number; total: number; totalPages: number };
+  }>;
+};
+
+export const createProduct = async (token: string, data: ProductPayload) => {
+  const formData = new FormData();
+  formData.append('title', data.title);
+  formData.append('description', data.description);
+  formData.append('thumbnail', data.thumbnail);
+
+  const res = await fetch(`${API_URL}/products`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
   });
-  if (!res.ok) throw new Error('Erro ao criar produto');
-  return res.json();
-}
 
-export async function updateProduct(
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || 'Erro desconhecido, contate o suporte');
+  }
+  return res.json();
+};
+
+export const updateProduct = async (
   token: string,
   id: string,
-  data: Partial<ProductPayload & { status?: boolean }>
-) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/products/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error('Erro ao atualizar produto');
-  return res.json();
-}
+  data: ProductPayload
+) => {
+  const formData = new FormData();
+  formData.append('title', data.title);
+  formData.append('description', data.description);
+  formData.append('thumbnail', data.thumbnail);
 
-export async function deleteProduct(token: string, id: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/products/${id}`, {
+  const res = await fetch(`${API_URL}/products/${id}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || 'Erro desconhecido, contate o suporte');
+  }
+  return res.json();
+};
+
+export const deleteProduct = async (token: string, id: string) => {
+  const res = await fetch(`${API_URL}/products/${id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (!res.ok) throw new Error('Erro ao deletar produto');
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || 'Erro desconhecido, contate o suporte');
+  }
   return res.json();
-}
+};
