@@ -16,6 +16,16 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
+type LoginResponse = {
+  token: string;
+  user: {
+    name: string;
+    email: string;
+    id: string;
+  };
+  message?: string;
+};
+
 export default function LoginPage() {
   const { register, handleSubmit, formState } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -34,17 +44,21 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err: { message?: string } = await res.json();
         throw new Error(err.message || 'Erro ao realizar login');
       }
 
-      const result = await res.json();
+      const result: LoginResponse = await res.json();
       dispatch(setToken(result.token));
 
       alert(`✅ Bem-vindo ${result.user.name}`);
       router.push('/products');
-    } catch (error: any) {
-      alert(`❌ ${error.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(`❌ ${error.message}`);
+      } else {
+        alert('❌ Erro inesperado');
+      }
     } finally {
       setLoading(false);
     }

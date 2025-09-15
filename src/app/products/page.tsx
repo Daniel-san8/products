@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import {
@@ -23,6 +23,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function ProductsPage() {
   const token = useSelector((state: RootState) => state.auth.token);
@@ -48,24 +49,27 @@ export default function ProductsPage() {
     { name: 'Abr', vendas: 45 },
   ];
 
-  const loadProducts = async (pageNumber: number = 1) => {
-    if (!token) return;
-    setLoading(true);
-    try {
-      const data = await fetchProducts(token, pageNumber, 10);
-      setProducts(data.data);
-      setPage(data.meta.page);
-      setTotalPages(data.meta.totalPages);
-    } catch {
-      alert('Erro ao buscar produtos');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loadProducts = useCallback(
+    async (pageNumber: number = 1) => {
+      if (!token) return;
+      setLoading(true);
+      try {
+        const data = await fetchProducts(token, pageNumber, 10);
+        setProducts(data.data);
+        setPage(data.meta.page);
+        setTotalPages(data.meta.totalPages);
+      } catch {
+        alert('Erro ao buscar produtos');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [token]
+  );
 
   useEffect(() => {
     loadProducts(1);
-  }, [token]);
+  }, [loadProducts]);
 
   const resetForm = () => {
     setTitle('');
@@ -98,8 +102,12 @@ export default function ProductsPage() {
       alert('Produto criado!');
       resetForm();
       loadProducts(page);
-    } catch (err: any) {
-      alert(`Erro ao criar produto: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(`Erro ao criar produto: ${err.message}`);
+      } else {
+        alert('Erro desconhecido ao criar produto');
+      }
     } finally {
       setLoading(false);
     }
@@ -122,8 +130,12 @@ export default function ProductsPage() {
       setIsModalOpen(false);
       resetForm();
       loadProducts(page);
-    } catch (err: any) {
-      alert(`Erro ao atualizar produto: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(`Erro ao atualizar produto: ${err.message}`);
+      } else {
+        alert('Erro desconhecido ao atualizar produto');
+      }
     } finally {
       setLoading(false);
     }
@@ -136,8 +148,12 @@ export default function ProductsPage() {
       await deleteProduct(token, id);
       alert('Produto deletado!');
       loadProducts(page);
-    } catch (err: any) {
-      alert(`Erro ao deletar produto: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(`Erro ao deletar produto: ${err.message}`);
+      } else {
+        alert('Erro desconhecido ao deletar produto');
+      }
     } finally {
       setLoading(false);
     }
@@ -193,9 +209,12 @@ export default function ProductsPage() {
               className="dark:bg-gray-700 dark:text-gray-100 p-3 rounded-2xl"
             />
             {preview && (
-              <img
+              <Image
                 src={preview}
-                className="mt-2 w-32 h-32 object-cover rounded"
+                alt="Preview do produto"
+                width={128}
+                height={128}
+                className="mt-2 object-cover rounded"
               />
             )}
             <Button
@@ -231,9 +250,11 @@ export default function ProductsPage() {
                     : p.description}
                 </p>
                 {p.thumbnail && (
-                  <img
+                  <Image
                     src={p.thumbnail}
                     alt={p.title}
+                    width={400}
+                    height={200}
                     className="mt-2 w-full h-32 object-cover rounded"
                   />
                 )}
@@ -301,9 +322,12 @@ export default function ProductsPage() {
                 className="dark:bg-gray-700 dark:text-gray-100"
               />
               {preview && (
-                <img
+                <Image
                   src={preview}
-                  className="mt-2 w-32 h-32 object-cover rounded"
+                  alt="Preview do produto em edição"
+                  width={128}
+                  height={128}
+                  className="mt-2 object-cover rounded"
                 />
               )}
               <div className="flex gap-2 mt-2 flex-wrap">

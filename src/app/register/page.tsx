@@ -66,13 +66,17 @@ export default function Register() {
       reset();
 
       router.push('/login');
-    } catch (error: any) {
-      if (error.message.includes('email')) {
-        setError('email', { type: 'manual', message: error.message });
-      } else if (error.message.includes('phone')) {
-        setError('phone', { type: 'manual', message: error.message });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message.includes('email')) {
+          setError('email', { type: 'manual', message: error.message });
+        } else if (error.message.includes('phone')) {
+          setError('phone', { type: 'manual', message: error.message });
+        } else {
+          alert(`❌ Erro: ${error.message}`);
+        }
       } else {
-        alert(`❌ Erro: ${error.message}`);
+        alert('❌ Ocorreu um erro inesperado');
       }
     } finally {
       setLoading(false);
